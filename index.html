@@ -1,1 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centrix Construction - COMPLETE ANIMATION SHOWCASE</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --construction-yellow: #f4d03f;
+            --construction-orange: #e67e22;
+            --construction-blue: #3498db;
+            --construction-dark: #2c3e50;
+            --construction-red: #e74c3c;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            overflow-x: hidden;
+        }
+        
+        /* ========== 1. HEAVY MACHINERY ========== */
+        .construction-zone { min-height: 400px; position: relative; }
+        .crane-container { position: relative; height: 350px; width: 100%; }
+        .crane-base {
+            position: absolute; bottom: 0; left: 10%; width: 25px; height: 180px;
+            background: linear-gradient(180deg, #555, #222); border-radius: 12px 12px 0 0;
+            animation: craneSway 7s ease-in-out infinite;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        .crane-arm {
+            position: absolute; bottom: 180px; left: 10%; transform: translateX(-10%) rotate(-25deg);
+            width: 350px; height: 10px; background: linear-gradient(90deg, #f39c12, #e67e22);
+            border-radius: 5px; animation: craneSwing 9s ease-in-out infinite;
+        }
+        .crane-hook {
+            position: absolute; bottom: 170px; left: calc(10% + 340px); width: 25px; height: 25px;
+            background: var(--construction-red); border-radius: 50%; border: 5px solid var(--construction-dark);
+            animation: hookDrop 4s ease-in-out infinite;
+        }
+        .cargo {
+            position: absolute; bottom: 195px; left: calc(10% + 350px); width: 50px; height: 35px;
+            background: var(--construction-yellow); border-radius: 8px;
+            animation: cargoLift 4s ease-in-out infinite;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .excavator { position: relative; width: 250px; height: 140px; margin: 0 auto; }
+        .excavator-body {
+            position: absolute; bottom: 0; left: 0; width: 140px; height: 70px;
+            background: linear-gradient(135deg, #34495e, #2c3e50); border-radius: 35px 35px 15px 15px;
+            animation: excavatorMove 12s linear infinite;
+        }
+        .excavator-arm {
+            position: absolute; bottom: 60px; right: -70px; width: 90px; height: 14px;
+            background: var(--construction-orange); transform-origin: left center;
+            animation: armDig 3.5s ease-in-out infinite;
+            border-radius: 7px;
+        }
+        .excavator-bucket {
+            position: absolute; bottom: -12px; right: 0; width: 35px; height: 28px;
+            background: #95a5a6; border-radius: 0 0 18px 18px; transform-origin: top left;
+            animation: bucketScoop 3.5s ease-in-out infinite;
+            box-shadow: inset 0 -5px 10px rgba(0,0,0,0.3);
+        }
+        
+        /* ========== 2. HAMMER & SPARKS ========== */
+        .hammer-zone { position: relative; height: 250px; }
+        .hammer {
+            position: absolute; top: 0; right: 15%; width: 70px; height: 220px;
+        }
+        .hammer-head {
+            position: absolute; bottom: 0; left: 12px; width: 45px; height: 65px;
+            background: linear-gradient(145deg, var(--construction-red), #c0392b);
+            border-radius: 25px 25px 8px 8px; animation: hammerStrike 2.2s ease-in-out infinite;
+            box-shadow: 0 8px 25px rgba(231,76,60,0.4);
+        }
+        .hammer-handle {
+            position: absolute; bottom: 65px; left: 28px; width: 12px; height: 155px;
+            background: linear-gradient(180deg, #8b4513, #654321); border-radius: 6px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        /* ========== 3. PROGRESS BARS ========== */
+        .construction-progress {
+            height: 25px; background: linear-gradient(90deg, #bdc3c7, #95a5a6);
+            border-radius: 15px; overflow: hidden; margin: 25px 0; position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .progress-fill {
+            height: 100%; background: linear-gradient(90deg, var(--construction-yellow), var(--construction-orange));
+            width: 0%; position: relative; transition: width 0.1s linear;
+        }
+        .progress-fill::after {
+            content: '🏗️ 85%'; position: absolute; right: -60px; top: 50%;
+            transform: translateY(-50%); font-weight: bold; color: var(--construction-dark);
+            white-space: nowrap;
+        }
+        
+        /* ========== 4. PARTICLES & DUST ========== */
+        #particleCanvas {
+            position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none;
+        }
+        .dust-cloud { position: absolute; width: 100%; height: 100%; pointer-events: none; }
+        .dust-particle {
+            position: absolute; background: rgba(200,200,200,0.7); border-radius: 50%;
+            animation: dustRise 4s ease-out infinite;
+        }
+        
+        /* ========== ANIMATIONS ========== */
+        @keyframes craneSway { 0%,100%{transform:translateX(-10%)rotate(0deg);}50%{transform:translateX(-8%)rotate(1.5deg);} }
+        @keyframes craneSwing { 0%,100%{transform:translateX(-10%)rotate(-25deg);}50%{transform:translateX(-10%)rotate(-20deg);} }
+        @keyframes hookDrop { 0%,25%{transform:translateY(0)scale(1);}50%,75%{transform:translateY(90px)scale(0.85);}100%{transform:translateY(0)scale(1);} }
+        @keyframes cargoLift { 0%,25%{transform:translateY(0);opacity:1;}50%,75%{transform:translateY(-90px);opacity:0.7;}100%{transform:translateY(0);opacity:1;} }
+        @keyframes excavatorMove { 0%,100%{transform:translateX(0);}50%{transform:translateX(60px);} }
+        @keyframes armDig { 0%{transform:rotate(0deg);}50%{transform:rotate(-40deg);}100%{transform:rotate(0deg);} }
+        @keyframes bucketScoop { 0%{transform:rotate(0)scale(1);}45%{transform:rotate(-25deg)scale(1.15);}65%{transform:rotate(-25deg)scale(1.08);}100%{transform:rotate(0)scale(1);} }
+        @keyframes hammerStrike { 0%,75%{transform:rotate(-8deg)translateY(0);}85%{transform:rotate(3deg)translateY(-35px);}95%{transform:rotate(0deg)translateY(-45px);}100%{transform:rotate(0deg)translateY(0);} }
+        @keyframes dustRise { 0%{transform:translateY(0)scale(0);opacity:1;}100%{transform:translateY(-200px)scale(1.2);opacity:0;} }
+        @keyframes sparkFly { 0%{transform:scale(0)translateY(0);opacity:1;}100%{transform:scale(1.5)translateY(-120px);opacity:0;} }
+        
+        /* Section Styles */
+        .hero-section { background: linear-gradient(135deg, var(--construction-blue), var(--construction-dark)); color: white; padding: 120px 0; }
+        .machinery-section { background: linear-gradient(135deg, #f8f9fa, #e9ecef); }
+        .stats-section { background: linear-gradient(135deg, var(--construction-yellow), var(--construction-orange)); color: var(--construction-dark); }
+        .glass-card { background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.2); }
+        
+        .navbar { background: rgba(255,255,255,0.98) !important; backdrop-filter: blur(20px); box-shadow: 0 8px 32px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-3" href="#"><i class="fas fa-hard-hat text-warning me-2"></i>Centrix Construction</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link px-3" href="#hero">Home</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="#machinery">Machinery</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="#progress">Progress</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="#stats">Stats</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
+    <!-- Hero with Crane -->
+    <section id="hero" class="hero-section pt-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-7">
+                    <h1 class="display-3 fw-bold mb-4 animate_animated animate_fadeInLeft">
+                        Construction <span class="text-warning">Powerhouse</span>
+                    </h1>
+                    <p class="lead fs-4 mb-5 opacity-90 animate_animated animatefadeInLeft animate_delay-1s">
+                        Watch our fleet in action. Real-time construction animations.
+                    </p>
+                    <div class="d-flex gap-3 animate_animated animatefadeInUp animate_delay-2s">
+                        <a href="#contact" class="btn btn-warning btn-lg px-5 py-3 fw-bold shadow-lg">
+                            <i class="fas fa-phone me-2"></i>Get Quote
+                        </a>
+                        <a href="#machinery" class="btn btn-outline-light btn-lg px-5 py-3 fw-bold">
+                            Watch Machinery
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="crane-container mx-auto">
+                        <div class="crane-base"></div>
+                        <div class="crane-arm"></div>
+                        <div class="crane-hook"></div>
+                        <div class="cargo"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Machinery Showcase -->
+    <section id="machinery" class="machinery-section py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-4 fw-bold mb-4">Heavy Machinery Live</h2>
+                <p class="lead text-muted fs-5">Our equipment never stops working for you</p>
+            </div>
+            <div class="row g-5">
+                <div class="col-lg-6">
+                    <div class="excavator mb-4">
+                        <div class="excavator-body"></div>
+                        <div class="excavator-arm"></div>
+                        <div class="excavator-bucket"></div>
+                    </div>
+                    <h4 class="fw-bold mb-3">Excavator Fleet</h4>
+                    <p class="text-muted">Digging foundations with precision</p>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hammer-zone mx-auto d-block">
+                        <div class="hammer">
+                            <div class="hammer-head"></div>
+                            <div class="hammer-handle"></div>
+                        </div>
+                        <div class="impact-sparks position-absolute" id="sparks"></div>
+                        <div class="dust-cloud position-absolute w-100 h-100" id="dust"></div>
+                    </div>
+                    <h4 class="fw-bold mb-3 mt-4">Structural Hammering</h4>
+                    <p class="text-muted">Perfect every nail strike</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Progress Bars -->
+    <section id="progress" class="py-5 bg-dark text-white">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-4 fw-bold mb-4">Project Progress</h2>
+                <p class="lead fs-5 opacity-90">Real-time construction updates</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h5 class="fw-bold mb-3">Centrix Towers</h5>
+                    <div class="construction-progress">
+                        <div class="progress-fill" data-progress="92"></div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <h5 class="fw-bold mb-3">Gurgaon Plaza</h5>
+                    <div class="construction-progress">
+                        <div class="progress-fill" data-progress="78"></div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <h5 class="fw-bold mb-3">Mumbai Mall</h5>
+                    <div class="construction-progress">
+                        <div class="progress-fill" data-progress="65"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats with Counter -->
+    <section id="stats" class="stats-section py-5">
+        <div class="container text-center">
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <div class="display-1 fw-bold mb-3 counter" data-target="127">0</div>
+                    <h5 class="fw-bold">Projects Live</h5>
+                </div>
+                <div class="col-md-3">
+                    <div class="display-1 fw-bold mb-3 counter" data-target="450">0</div>
+                    <h5 class="fw-bold">Machines</h5>
+                </div>
+                <div class="col-md-3">
+                    <div class="display-1 fw-bold mb-3 counter" data-target="2500">0</div>
+                    <h5 class="fw-bold">Workers</h5>
+                </div>
+                <div class="col-md-3">
+                    <div class="display-1 fw-bold mb-3 counter" data-target="98">0</div>
+                    <h5 class="fw-bold">On-Time %</h5>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section id="contact" class="py-5 bg-primary text-white">
+        <div class="container text-center">
+            <h2 class="display-3 fw-bold mb-4">Ready to Build?</h2>
+            <p class="lead fs-4 mb-5">Your project starts here</p>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="input-group input-group-lg">
+                        <input type="tel" class="form-control border-0 py-4 px-5 rounded-pill" placeholder="📱 Enter Phone Number">
+                        <button class="btn btn-warning btn-lg px-6 py-4 rounded-pill fw-bold fs-5">
+                            <i class="fas fa-hammer me-2"></i>Start Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Particle Canvas -->
+    <canvas id="particleCanvas"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // ========== SMOOTH SCROLL ==========
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', e => {
+                e.preventDefault();
+                document.querySelector(anchor.getAttribute('href')).scrollIntoView({ behavior:
